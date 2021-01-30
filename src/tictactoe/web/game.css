@@ -1,0 +1,10 @@
+#resultBox{
+    width: 100px;
+    height: 100px;
+}
+
+#resultBox .column {
+    border-width: 1px;
+    border-color:dimgray;
+    border-style: solid;
+}

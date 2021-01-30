@@ -1,0 +1,44 @@
+<html>
+<header>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <link rel="stylesheet" href="game.css">
+</header>
+
+<body>
+    <div id="game">
+        <button v-on:click="startGame()">Start New Game</button>
+        <button v-on:click="getGameStatus()">Get Game Status</button>
+        <button v-on:click="moveX()">Move X</button>
+        <button v-on:click="moveO()">Move O</button>
+        <input type="text" v-model="gameid">
+        <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+    <div id="resultBox">
+        <div class="container">
+
+            <div class="row">
+                <div class="column">X</div>
+                <div class="column">X</div>
+                <div class="column">X</div>
+            </div>
+            <div class="row">
+                <div class="column">X</div>
+                <div class="column">X</div>
+                <div class="column">X</div>
+            </div>
+            <div class="row">
+                <div class="column">X</div>
+                <div class="column">X</div>
+                <div class="column">X</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html

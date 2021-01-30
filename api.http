@@ -12,7 +12,7 @@ content-type: application/json
 GET http://localhost:8080/v1/games HTTP/1.1
 ###
 
-@gameid = 14df733d-8864-453b-a484-2680defcde5b
+@gameid = a9bb4175-9a91-4240-bb79-cf3d7c1989e8
 
 ### Get Game Status
 GET http://localhost:8080/v1/games/{{gameid}} HTTP/1.1
@@ -26,7 +26,7 @@ POST http://localhost:8080/v1/games/{{gameid}}/move HTTP/1.1
 content-type: application/json
 
 {
-    "X": 2,
+    "X": 1,
     "Y": 0,
     "Move": "X"
 }

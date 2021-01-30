@@ -27,15 +27,15 @@ func (g *Game) Move(pm *Move, x, y int) error {
 }
 
 // Status returs game status
-func (g *Game) Status() [][]rune {
-    status := make([][]rune, len(g.board.moves))
+func (g *Game) Status() [][]string {
+    status := make([][]string, len(g.board.moves))
     for x, row := range g.board.moves {
-        status[x] = make([]rune, len(row))
+        status[x] = make([]string, len(row))
         for y, player := range row {
             if player == nil {
-                status[x][y] = ' '
+                status[x][y] = " "
             } else {
-                status[x][y] = player.Type
+                status[x][y] = string(player.Type)
             }
         }
     }
