@@ -57,11 +57,13 @@ func gameHandle(w http.ResponseWriter, r *http.Request) {
 			gameStatus := &struct {
 				GameID string
 				Status [][]string
-				Result string
+                Result string
+                NextMove string
 			}{
 				GameID: g.ID,
 				Status: g.Status(),
-				Result: g.GetResults(),
+                Result: g.GetResults(),
+                NextMove: string(g.NextMove),
 			}
 			js, err := json.Marshal(gameStatus)
 			if err != nil {
@@ -107,7 +109,11 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
 		if g, ok := cache[id]; ok {
 			// io.WriteString(w, "Game ID: "+g.ID)
 			move := &game.Move{Type: []rune(moveParams.Move)[0]}
-			g.Move(move, moveParams.X, moveParams.Y)
+            err = g.Move(move, moveParams.X, moveParams.Y)
+            if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			// status := getStatus(g)
 			// io.WriteString(w, "\nStatus:\n")
 			// io.WriteString(w, status)
@@ -118,10 +124,12 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
 				GameID string
 				Status [][]string
 				Result string
+                NextMove string
 			}{
 				GameID: g.ID,
 				Status: g.Status(),
 				Result: g.GetResults(),
+                NextMove: string(g.NextMove),
 			}
 			js, err := json.Marshal(gameStatus)
 			if err != nil {

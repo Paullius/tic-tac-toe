@@ -1,6 +1,8 @@
 package game
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
 )
 
@@ -8,12 +10,13 @@ import (
 type Game struct {
     ID    string
     board *Board
+    NextMove rune
 }
 
 // CreateGame is for creating new game
 func CreateGame() *Game {
     id := uuid.New().String()
-    g := &Game{ID: id}
+    g := &Game{ID: id, NextMove: 'X'}
     gb := &Board{}
     gb.Init()
     g.board = gb
@@ -23,7 +26,19 @@ func CreateGame() *Game {
 
 // Move is for player move
 func (g *Game) Move(pm *Move, x, y int) error {
-    return g.board.Move(pm, x, y)
+    if pm.Type != g.NextMove {
+        return errors.New("Invalid move")
+    }
+    err := g.board.Move(pm, x, y)
+    if err == nil {
+        if pm.Type == 'X' {
+            g.NextMove = 'O'
+        } else {
+            g.NextMove = 'X'
+        }
+    }
+
+    return err
 }
 
 // Status returs game status

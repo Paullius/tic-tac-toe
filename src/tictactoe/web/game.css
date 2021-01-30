@@ -8,3 +8,8 @@
     border-color:dimgray;
     border-style: solid;
 }
+
+.empty {
+    width: 10px !important;
+    height: 23px;
+}
