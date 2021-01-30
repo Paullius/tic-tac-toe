@@ -1,10 +1,9 @@
 package api
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
-	"strconv"
-	"unicode"
 
 	"../game"
 	"github.com/gorilla/mux"
@@ -17,11 +16,12 @@ func gamesHandle(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
         g := game.CreateGame()
         cache[g.ID] = g
-    } else if r.Method == "GET" {
-        io.WriteString(w, "Need to show games\n\n")
-        g := game.CreateGame()
-        cache[g.ID] = g
         io.WriteString(w, "New game created: "+g.ID)
+    } else if r.Method == "GET" {
+        io.WriteString(w, "Games:\n\n")
+        for id := range cache {
+            io.WriteString(w, "Game ID: "+id)
+        }
     }
     w.WriteHeader(http.StatusOK)
 
@@ -36,6 +36,9 @@ func gameHandle(w http.ResponseWriter, r *http.Request) {
             status := getStatus(g)
             io.WriteString(w, "\nStatus:\n")
             io.WriteString(w, status)
+            io.WriteString(w, "\nResults:\n")
+            result := g.GetResults()
+            io.WriteString(w, result)
 
         } else {
             io.WriteString(w, "No Game Found")
@@ -50,19 +53,26 @@ func gameHandle(w http.ResponseWriter, r *http.Request) {
 
 func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
 
+    r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+    dec := json.NewDecoder(r.Body)
+    dec.DisallowUnknownFields()
+    moveParams := &struct {
+        X    int
+        Y    int
+        Move string
+    }{}
+    err := dec.Decode(&moveParams)
+    if err != nil {
+        msg := "Request body has to be JSON object"
+        http.Error(w, msg, http.StatusInternalServerError)
+    }
+
     vars := mux.Vars(r)
     id := vars["id"]
     if g, ok := cache[id]; ok {
-        move := []rune(vars["move"])[0]
-        x, _ := strconv.Atoi(vars["x"])
-        y, _ := strconv.Atoi(vars["y"])
-        // fmt.Println("MOVE: ", string(move), x, y)
-        move = unicode.ToUpper(move)
-        pm := &game.Move{Type: move}
-        if err := g.Move(pm, x, y); err != nil {
-            io.WriteString(w, "ERROR: "+err.Error())
-        }
         io.WriteString(w, "Game ID: "+g.ID)
+        move := &game.Move{Type: []rune(moveParams.Move)[0]}
+        g.Move(move,moveParams.X,moveParams.Y)
         status := getStatus(g)
         io.WriteString(w, "\nStatus:\n")
         io.WriteString(w, status)
@@ -73,15 +83,14 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
     } else {
         io.WriteString(w, "No Game Found")
     }
-
 }
 
 // StartServer is for starting API server
 func StartServer() {
     myRouter := mux.NewRouter().StrictSlash(true)
-    myRouter.HandleFunc("/v1/game", gamesHandle)
-    myRouter.HandleFunc("/v1/game/{id}", gameHandle)
-    myRouter.HandleFunc("/v1/game/{id}/{x}/{y}/{move}", gameMoveHandle)
+    myRouter.HandleFunc("/v1/games", gamesHandle)
+    myRouter.HandleFunc("/v1/games/{id}", gameHandle)
+    myRouter.HandleFunc("/v1/games/{id}/move", gameMoveHandle)
     http.ListenAndServe(":8080", myRouter)
 }
 

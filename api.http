@@ -1,0 +1,34 @@
+
+### Create Game
+POST http://localhost:8080/v1/games HTTP/1.1
+content-type: application/json
+
+{
+    "user1": "Alex",
+    "user2": "Sam",
+}
+
+### Get Games
+GET http://localhost:8080/v1/games HTTP/1.1
+###
+
+@gameid = 14df733d-8864-453b-a484-2680defcde5b
+
+### Get Game Status
+GET http://localhost:8080/v1/games/{{gameid}} HTTP/1.1
+
+### Create Move
+@x = 2
+@y = 0
+@move = X
+# POST http://localhost:8080/v1/games/{{gameid}}/{{x}}/{{y}}/{{move}} HTTP/1.1
+POST http://localhost:8080/v1/games/{{gameid}}/move HTTP/1.1
+content-type: application/json
+
+{
+    "X": 2,
+    "Y": 0,
+    "Move": "X"
+}
+
+###
