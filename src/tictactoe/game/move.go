@@ -2,6 +2,6 @@ package game
 
 // Move is player and player move
 type Move struct {
-    Player *Player
+    // Player *Player
     Type   rune
 }

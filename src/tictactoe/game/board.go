@@ -36,7 +36,7 @@ func (gb *Board) validateMove(pm *Move, x, y int) error {
         return errors.New("invalid move - move already exists")
     }
 
-    if pm.Type != rune('X') && pm.Type != rune('O') {
+    if pm.Type != X && pm.Type != O {
         return errors.New("invalid move - " + string(pm.Type))
     }
 
@@ -55,6 +55,21 @@ func (gb *Board) IsComplete() bool {
 
     return true
 }
+
+// GetEmptyCells is for returning empty cell coordinates
+func (gb *Board) GetEmptyCells() [][2]int {
+    emptyCells := [][2]int{}
+    for x, row := range gb.moves {
+        for y, move := range row {
+            if move == nil {
+                emptyCells = append(emptyCells, [2]int{x,y})
+            }
+        }
+    }
+
+    return emptyCells
+}
+
 
 // GetWinner is for geting results
 func (gb *Board) GetWinner() *Move {
@@ -111,7 +126,7 @@ func (gb *Board) GetWinner() *Move {
     candidate = gb.moves[0][l-1]
     if candidate != nil {
         for d := 0; d < l; d++ {
-            bd :=l-d-1
+            bd := l - d - 1
             if gb.moves[d][bd] == nil || gb.moves[d][bd].Type != candidate.Type {
                 candidate = nil
                 break
