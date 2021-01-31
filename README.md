@@ -1,7 +1,7 @@
 
 
 
-# H1 Tic-tac-toe Game
+# Tic-tac-toe Game
 
 ## Description
 Tic-tac-toe is a game with web interface and REST API written in GO.
