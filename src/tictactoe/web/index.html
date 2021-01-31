@@ -64,13 +64,16 @@
                                 <span id="nextmove" class="nextmove">{{ nextMove}}</span>
                             </div>
                             <div v-else>
-                                <div v-if="result=='DRAW'">
+                                <!-- DRAW -->
+                                <div v-if="result==1">
                                     <strong class="nextmove"> Draw </strong>
                                 </div>
-                                <div v-if="result=='WIN-X'">
+                                <!-- WIN-X -->
+                                <div v-if="result==2">
                                     <strong class="nextmove"> X wins </strong>
                                 </div>
-                                <div v-if="result=='WIN-O'">
+                                <!-- WIN-O -->
+                                <div v-if="result==3">
                                     <strong class="nextmove"> O wins </strong>
                                 </div>
                             </div>

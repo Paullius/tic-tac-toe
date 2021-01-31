@@ -8,8 +8,8 @@ import (
 
 // Game is tic-tac-toe instance
 type Game struct {
-    ID    string
-    board *Board
+    ID       string
+    board    *Board
     NextMove rune
 }
 
@@ -58,18 +58,21 @@ func (g *Game) StatusBoard() [][]string {
     return status
 }
 
-// GetResults is for getting game result message
-func (g *Game) GetResults() string {
+// GetResultsEnum is for getting game results enum
+func (g *Game) GetResultsEnum() byte {
     winner := g.board.GetWinner()
     if winner != nil {
-        return "WIN-" + string(winner.Type)
+        if winner.Type == 'X' {
+            return 2 // WIN - X
+        }
+        return 3 // WIN - O
     }
 
     if g.board.IsComplete() {
-        return "DRAW"
+        return 1 //"DRAW"
     }
 
-    return "INPROGRESS"
+    return 0 //"INPROGRESS"
 }
 
 // IsComplete is game complete
