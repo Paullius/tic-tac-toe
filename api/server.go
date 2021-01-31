@@ -5,11 +5,11 @@ import (
 	"io"
 	"net/http"
 
-	"../game"
+	"github.com/Paullius/tic-tac-toe/game"
+	"github.com/Paullius/tic-tac-toe/game/enum"
+
 	"github.com/gorilla/mux"
 )
-
-var cache map[string]*game.Game = map[string]*game.Game{}
 
 func gamesHandle(w http.ResponseWriter, r *http.Request) {
     enableCors(&w)
@@ -18,12 +18,13 @@ func gamesHandle(w http.ResponseWriter, r *http.Request) {
         dec := json.NewDecoder(r.Body)
         dec.DisallowUnknownFields()
         newGameParams := &struct {
-            GameMode game.ModeEnum
+            GameMode enum.Mode `json:"gameMode"`
         }{}
         err := dec.Decode(&newGameParams)
         if err != nil && err != io.EOF {
             msg := "Request body has to be JSON object"
             http.Error(w, msg, http.StatusInternalServerError)
+            return
         }
 
         g := game.CreateGame(newGameParams.GameMode)
@@ -57,21 +58,22 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
         dec := json.NewDecoder(r.Body)
         dec.DisallowUnknownFields()
         moveParams := &struct {
-            X    int
-            Y    int
-            Move string
+            X    int    `json:"x"`
+            Y    int    `json:"y"`
+            Move string `json:"move"`
         }{}
 
         err := dec.Decode(&moveParams)
         if err != nil && err != io.EOF {
             msg := "Request body has to be JSON object"
             http.Error(w, msg, http.StatusInternalServerError)
+            return
         }
         vars := mux.Vars(r)
         id := vars["id"]
 
         if g, ok := cache[id]; ok {
-            move := &game.Move{Type: []rune(moveParams.Move)[0]}
+            move := enum.Move([]rune(moveParams.Move)[0])
             err = g.Move(move, moveParams.X, moveParams.Y)
             if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -85,7 +87,7 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-// StartServer is for starting API server
+// StartServer starts API server
 func StartServer() {
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/v1/games", gamesHandle)
@@ -97,15 +99,15 @@ func StartServer() {
 func writeStatus(id string, w http.ResponseWriter) {
     if g, ok := cache[id]; ok {
         gameStatus := &struct {
-            GameID     string
-            Board      [][]string
-            Result     game.ResultEnum
-            IsComplete bool
-            NextMove   string
-            GameMode   byte
+            GameID     string      `json:"gameID"`
+            Board      [][]string  `json:"board"`
+            Result     enum.Result `json:"result"`
+            IsComplete bool        `json:"isComplete"`
+            NextMove   string      `json:"nextMove"`
+            GameMode   byte        `json:"gameMode"`
         }{
             GameID:     g.ID,
-            Board:      g.StatusBoard(),
+            Board:      g.GetStatusBoard(),
             Result:     g.GetResultsEnum(),
             IsComplete: g.IsComplete(),
             NextMove:   string(g.NextMove),
@@ -126,6 +128,6 @@ func writeStatus(id string, w http.ResponseWriter) {
 
 func enableCors(w *http.ResponseWriter) {
     (*w).Header().Set("Access-Control-Allow-Origin", "*")
-    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }

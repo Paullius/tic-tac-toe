@@ -7,12 +7,12 @@ var defaultData = {
     isComplete: false
 };
 function setStatus(data, respone) {
-    data.gameid = respone.GameID;
-    data.board = respone.Board
-    data.nextMove = respone.NextMove;
-    data.result = respone.Result
-    data.isComplete = respone.IsComplete;
-    data.gamemode = respone.GameMode;
+    data.gameid = respone.gameID;
+    data.board = respone.board
+    data.nextMove = respone.nextMove;
+    data.result = respone.result
+    data.isComplete = respone.isComplete;
+    data.gamemode = respone.gameMode;
 }
 var app = new Vue({
     el: '#game',
@@ -22,9 +22,9 @@ var app = new Vue({
             if (this.isComplete === true) return
             axios
                 .post('http://localhost:8080/v1/games/' + this.gameid + "/move", {
-                    'X': position[0],
-                    'Y': position[1],
-                    'Move': this.nextMove
+                    'x': position[0],
+                    'y': position[1],
+                    'move': this.nextMove
                 }).then(response => {
                     setStatus(this, response.data)
                     // console.log(response.data)
