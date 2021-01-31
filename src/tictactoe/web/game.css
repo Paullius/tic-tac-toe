@@ -1,15 +1,32 @@
-#resultBox{
-    width: 100px;
-    height: 100px;
+#board{
+    width: 300px;
+    display: inline-block;
 }
 
-#resultBox .column {
+#board .column {
     border-width: 1px;
     border-color:dimgray;
     border-style: solid;
+    text-align: center;
 }
 
 .empty {
-    width: 10px !important;
-    height: 23px;
+    min-width: 10px !important;
+    height: 100px;
+    display:inline-block;
+    vertical-align: middle;
+    font-size: 80px;
+    line-height: 1.15;
+}
+
+#resultBox {
+    margin-left:-10px ;
+}
+
+#nextmove{
+    font-size: 80px;
+}
+
+#gameid{
+    max-width: 320px;
 }

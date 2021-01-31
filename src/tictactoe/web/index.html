@@ -8,50 +8,66 @@
 
 <body>
     <div id="game">
-        <div>
-            <button v-on:click="startGame()">Start New Game Session</button>
-            <button v-on:click="getGameStatus()">Load Game Session</button>
-            <label for="gameid">Game Session ID</label>
-            <input type="text" id="gameid" v-model="gameid">
+        <div class="container">
+            <h1>Tic-tac-toe</h1>
+            <div>
+                <button v-on:click="startGame()">Start New Game Session</button>
+                <button v-on:click="getGameStatus()">Load Game Session</button>
+                <label for="gameid">Game Session ID</label>
+                <input type="text" id="gameid" v-model="gameid">
 
-            <strong>Next Move: {{ nextMove}}</strong> <br>
-            <strong>Status: {{ result}}</strong>
-        </div>
-        <div id="resultBox">
-            <div class="container">
 
-                <div class="row">
-                    <div class="column" v-on:click="select([0,0])">
-                        <div class="empty"> {{ board[0][0]}}</div>
+            </div>
+            <div id="resultBox">
+                <div class="container">
+                    <div class="row">
+                        <div class="column">
+                            <div id="board">
+                                <div class="row">
+                                    <div class="column" v-on:click="select([0,0])">
+                                        <div class="empty"> {{ board[0][0]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([0,1])">
+                                        <div class="empty"> {{ board[0][1]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([0,2])">
+                                        <div class="empty"> {{ board[0][2]}}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column" v-on:click="select([1,0])">
+                                        <div class="empty"> {{ board[1][0]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([1,1])">
+                                        <div class="empty"> {{ board[1][1]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([1,2])">
+                                        <div class="empty"> {{ board[1][2]}}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="column" v-on:click="select([2,0])">
+                                        <div class="empty"> {{ board[2][0]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([2,1])">
+                                        <div class="empty"> {{ board[2][1]}}</div>
+                                    </div>
+                                    <div class="column" v-on:click="select([2,2])">
+                                        <div class="empty"> {{ board[2][2]}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column column-75">
+                            <label class="label-inline" for="nextmove">Next Move: </label>
+                            <span id="nextmove">{{ nextMove}}</span>
+
+                        </div>
                     </div>
-                    <div class="column" v-on:click="select([0,1])">
-                        <div class="empty"> {{ board[0][1]}}</div>
+                    <div class="row">
+                        <strong>Status: {{ result}}</strong>
                     </div>
-                    <div class="column" v-on:click="select([0,2])">
-                        <div class="empty"> {{ board[0][2]}}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column" v-on:click="select([1,0])">
-                        <div class="empty"> {{ board[1][0]}}</div>
-                    </div>
-                    <div class="column" v-on:click="select([1,1])">
-                        <div class="empty"> {{ board[1][1]}}</div>
-                    </div>
-                    <div class="column" v-on:click="select([1,2])">
-                        <div class="empty"> {{ board[1][2]}}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="column" v-on:click="select([2,0])">
-                        <div class="empty"> {{ board[2][0]}}</div>
-                    </div>
-                    <div class="column" v-on:click="select([2,1])">
-                        <div class="empty"> {{ board[2][1]}}</div>
-                    </div>
-                    <div class="column" v-on:click="select([2,2])">
-                        <div class="empty"> {{ board[2][2]}}</div>
-                    </div>
+
                 </div>
             </div>
         </div>

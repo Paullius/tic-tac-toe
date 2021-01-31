@@ -58,7 +58,7 @@ func (g *Game) Status() [][]string {
     return status
 }
 
-// GetResults is restuls
+// GetResults is for getting game result message
 func (g *Game) GetResults() string {
     winner := g.board.GetWinner()
     if winner != nil {
@@ -70,4 +70,9 @@ func (g *Game) GetResults() string {
     }
 
     return "In Progress"
+}
+
+// IsComplete is game complete
+func (g *Game) IsComplete() bool {
+    return g.board.IsComplete()
 }
