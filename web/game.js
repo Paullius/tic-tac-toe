@@ -1,3 +1,5 @@
+var apiServer = "http://localhost:8080"
+
 var defaultData = {
     gameid: "",
     board: [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]],
@@ -21,7 +23,7 @@ var app = new Vue({
         select(position) {
             if (this.isComplete === true) return
             axios
-                .post('http://localhost:8080/v1/games/' + this.gameid + "/move", {
+                .post(apiServer + '/v1/games/' + this.gameid + "/move", {
                     'x': position[0],
                     'y': position[1],
                     'move': this.nextMove
@@ -35,7 +37,7 @@ var app = new Vue({
         },
         startGame() {
             axios
-                .post('http://localhost:8080/v1/games', { 'GameMode': parseInt(this.newGamemode) }).then(response => {
+                .post(apiServer + '/v1/games', { 'GameMode': parseInt(this.newGamemode) }).then(response => {
                     setStatus(this, response.data)
                 })
                 .catch(function (error) {

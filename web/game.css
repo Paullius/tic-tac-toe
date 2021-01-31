@@ -1,6 +1,9 @@
 #board{
-    width: 300px;
+    width: 400px;
     display: inline-block;
+}
+#board .row {
+    flex-direction: row;
 }
 
 #board .column {
@@ -21,6 +24,8 @@
 
 #resultBox {
     margin-left:-10px ;
+    min-width: 400px;
+
 }
 
 .nextmove{
@@ -31,5 +36,16 @@
     max-width: 320px;
 }
 #gamemode{
-    width: 550px;
+    width: 320px;
+    display:inline-block;
+}
+
+#currentGameType{
+    margin-bottom: 20px;
+}
+
+.game-button{
+    width: 170px;
+    padding-left: 15px;
+    padding-right: 15px;
 }

@@ -11,9 +11,8 @@
         <div class="container">
             <h1>Tic-tac-toe</h1>
             <div>
-                <!-- <button v-on:click="startGame()">Start New Game Session</button> -->
-                <!-- <button v-on:click="getGameStatus()">Load Game Session</button> -->
                 <br>
+                <label for="gamemode">Choose Opponent for Your New Game:</label>
                 <div id="gamemode">
                     <div class="row">
                         <div class="column">
@@ -28,20 +27,25 @@
                             <input type="radio" id="pvai2" v-model="newGamemode" value="2">
                             <label class="label-inline" for="pvai2">PvAI lvl2</label>
                         </div>
-                        <div class="column">
-                            <button v-on:click="startGame()">Start New Game Session</button>
-                        </div>
                     </div>
                 </div>
+                <button class="button game-button" v-on:click="startGame()">Start New Game</button>
 
-                <label for="gameid">Game Session ID</label>
-                <input type="text" id="gameid" v-model="gameid"> <strong>
-                    <span v-if="gamemode === 0">PvP</span>
-                    <span v-else-if="gamemode === 1">PvAI lvl1</span>
-                    <span v-else-if="gamemode === 2">PvAI lvl2</span>
-                </strong>
+                <label for="gameid">Game ID</label>
+                <input type="text" id="gameid" v-model="gameid">
 
-
+                <button id="loadExisting" class="button button-outline game-button" v-on:click="getGameStatus()">Load
+                    Existing
+                    Game</button>
+                <div id="currentGameType">
+                    <strong>
+                        <span v-if="gamemode === 0">PvP - take turns playing with your friend
+                            <br> <small>(Use Game ID if sharing server)</small>
+                        </span>
+                        <span v-else-if="gamemode === 1">PvAI lvl1 - play against AI level 1</span>
+                        <span v-else-if="gamemode === 2">PvAI lvl2 - play against AI level 2</span>
+                    </strong>
+                </div>
             </div>
             <div id="resultBox">
                 <div class="container">
@@ -83,29 +87,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="column column-75">
-                            <div v-if="!isComplete">
-                                <label class="label-inline" for="nextmove">Next Move: </label>
-                                <span id="nextmove" class="nextmove">{{ nextMove}}</span>
-                            </div>
-                            <div v-else>
-                                <!-- DRAW -->
-                                <div v-if="result==1">
-                                    <strong class="nextmove"> Draw </strong>
-                                </div>
-                                <!-- WIN-X -->
-                                <div v-else-if="result==2">
-                                    <strong class="nextmove"> X wins </strong>
-                                </div>
-                                <!-- WIN-O -->
-                                <div v-else-if="result==3">
-                                    <strong class="nextmove"> O wins </strong>
-                                </div>
-                            </div>
 
-                        </div>
                     </div>
 
+
+                </div>
+                <div class="column column-75">
+                    <div v-if="!isComplete">
+                        <label class="label-inline nextmove" for="nextmove">Player Turn: </label>
+                        <span id="nextmove" class="nextmove">{{ nextMove}}</span>
+                    </div>
+                    <div v-else>
+                        <!-- DRAW -->
+                        <div v-if="result==1">
+                            <strong class="nextmove"> Draw </strong>
+                        </div>
+                        <!-- WIN-X -->
+                        <div v-else-if="result==2">
+                            <strong class="nextmove">Player X wins </strong>
+                        </div>
+                        <!-- WIN-O -->
+                        <div v-else-if="result==3">
+                            <strong class="nextmove">Player O wins </strong>
+                        </div>
+                    </div>
 
                 </div>
             </div>
