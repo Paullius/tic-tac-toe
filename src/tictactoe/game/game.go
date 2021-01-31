@@ -41,8 +41,8 @@ func (g *Game) Move(pm *Move, x, y int) error {
     return err
 }
 
-// Status returs game status
-func (g *Game) Status() [][]string {
+// StatusBoard returs game status
+func (g *Game) StatusBoard() [][]string {
     status := make([][]string, len(g.board.moves))
     for x, row := range g.board.moves {
         status[x] = make([]string, len(row))
@@ -62,17 +62,17 @@ func (g *Game) Status() [][]string {
 func (g *Game) GetResults() string {
     winner := g.board.GetWinner()
     if winner != nil {
-        return "Winner is " + string(winner.Type)
+        return "WIN-" + string(winner.Type)
     }
 
     if g.board.IsComplete() {
-        return "Draw"
+        return "DRAW"
     }
 
-    return "In Progress"
+    return "INPROGRESS"
 }
 
 // IsComplete is game complete
 func (g *Game) IsComplete() bool {
-    return g.board.IsComplete()
+    return g.board.IsComplete() || g.board.GetWinner() != nil
 }

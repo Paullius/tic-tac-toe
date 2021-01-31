@@ -18,19 +18,6 @@ func gamesHandle(w http.ResponseWriter, r *http.Request) {
         cache[g.ID] = g
 
         writeStatus(g.ID, w)
-
-        // newGame := &struct {
-        //     GameID string
-        // }{
-        //     GameID: g.ID,
-        // }
-        // js, err := json.Marshal(newGame)
-        // if err != nil {
-        //     http.Error(w, err.Error(), http.StatusInternalServerError)
-        //     return
-        // }
-        // w.Header().Set("Content-Type", "application/json")
-        // w.Write(js)
     } else if r.Method == "GET" {
         io.WriteString(w, "Games:\n\n")
         for id := range cache {
@@ -38,7 +25,6 @@ func gamesHandle(w http.ResponseWriter, r *http.Request) {
         }
     }
     w.WriteHeader(http.StatusOK)
-
 }
 
 func gameHandle(w http.ResponseWriter, r *http.Request) {
@@ -100,13 +86,13 @@ func writeStatus(id string, w http.ResponseWriter) {
     if g, ok := cache[id]; ok {
         gameStatus := &struct {
             GameID     string
-            Status     [][]string
+            Board     [][]string
             Result     string
             IsComplete bool
             NextMove   string
         }{
             GameID:     g.ID,
-            Status:     g.Status(),
+            Board:      g.StatusBoard(),
             Result:     g.GetResults(),
             IsComplete: g.IsComplete(),
             NextMove:   string(g.NextMove),

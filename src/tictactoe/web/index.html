@@ -59,14 +59,25 @@
                             </div>
                         </div>
                         <div class="column column-75">
-                            <label class="label-inline" for="nextmove">Next Move: </label>
-                            <span id="nextmove">{{ nextMove}}</span>
+                            <div v-if="!isComplete">
+                                <label class="label-inline" for="nextmove">Next Move: </label>
+                                <span id="nextmove" class="nextmove">{{ nextMove}}</span>
+                            </div>
+                            <div v-else>
+                                <div v-if="result=='DRAW'">
+                                    <strong class="nextmove"> Draw </strong>
+                                </div>
+                                <div v-if="result=='WIN-X'">
+                                    <strong class="nextmove"> X wins </strong>
+                                </div>
+                                <div v-if="result=='WIN-O'">
+                                    <strong class="nextmove"> O wins </strong>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
-                    <div class="row">
-                        <strong>Status: {{ result}}</strong>
-                    </div>
+
 
                 </div>
             </div>
