@@ -87,7 +87,7 @@ func writeStatus(id string, w http.ResponseWriter) {
         gameStatus := &struct {
             GameID     string
             Board     [][]string
-            Result     byte
+            Result     game.ResultEnum
             IsComplete bool
             NextMove   string
         }{

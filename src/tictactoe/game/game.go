@@ -5,18 +5,25 @@ import (
 
 	"github.com/google/uuid"
 )
+const (
+    // X move
+    X = 'X'
+    // O move
+    O = 'O'
+)
 
 // Game is tic-tac-toe instance
 type Game struct {
     ID       string
     board    *Board
     NextMove rune
+    gameMode Mode
 }
 
 // CreateGame is for creating new game
 func CreateGame() *Game {
     id := uuid.New().String()
-    g := &Game{ID: id, NextMove: 'X'}
+    g := &Game{ID: id, NextMove: X}
     gb := &Board{}
     gb.Init()
     g.board = gb
@@ -31,10 +38,10 @@ func (g *Game) Move(pm *Move, x, y int) error {
     }
     err := g.board.Move(pm, x, y)
     if err == nil {
-        if pm.Type == 'X' {
-            g.NextMove = 'O'
+        if pm.Type == X {
+            g.NextMove = O
         } else {
-            g.NextMove = 'X'
+            g.NextMove = X
         }
     }
 
@@ -59,20 +66,20 @@ func (g *Game) StatusBoard() [][]string {
 }
 
 // GetResultsEnum is for getting game results enum
-func (g *Game) GetResultsEnum() byte {
+func (g *Game) GetResultsEnum() ResultEnum {
     winner := g.board.GetWinner()
     if winner != nil {
-        if winner.Type == 'X' {
-            return 2 // WIN - X
+        if winner.Type == X {
+            return WinX // WIN - X
         }
-        return 3 // WIN - O
+        return WinO // WIN - O
     }
 
     if g.board.IsComplete() {
-        return 1 //"DRAW"
+        return Draw //"DRAW"
     }
 
-    return 0 //"INPROGRESS"
+    return InProgress //"INPROGRESS"
 }
 
 // IsComplete is game complete
