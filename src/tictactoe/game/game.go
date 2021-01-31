@@ -25,9 +25,9 @@ type Game struct {
 }
 
 // CreateGame is for creating new game
-func CreateGame() *Game {
+func CreateGame(gm ModeEnum) *Game {
     id := uuid.New().String()
-    g := &Game{ID: id, NextMove: X}
+    g := &Game{ID: id, NextMove: X, GameMode: gm}
     gb := &Board{}
     gb.Init()
     g.board = gb
@@ -44,11 +44,9 @@ func (g *Game) Move(pm *Move, x, y int) error {
     }
     err := g.moveBoard(pm, x, y)
     // AI move
-    if err != nil && g.GameMode == ModeEnum(PvAI) {
-        // g.doAIMove()
+    if err == nil && g.GameMode == PvAIv1 {
+        g.doAIMove()
     }
-    g.doAIMove()
-
 
     return err
 }

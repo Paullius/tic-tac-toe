@@ -13,8 +13,30 @@
             <div>
                 <button v-on:click="startGame()">Start New Game Session</button>
                 <button v-on:click="getGameStatus()">Load Game Session</button>
+                <br>
+                <div id="gamemode">
+                    <div class="row">
+                        <div class="column">
+                            <input type="radio" id="pvp" v-model="newGamemode" value="0">
+                            <label class="label-inline" for="pvp">PvP</label>
+                        </div>
+                        <div class="column">
+                            <input type="radio" id="pvai1" v-model="newGamemode" value="1">
+                            <label class="label-inline" for="pvai1">PvAI lvl1</label>
+                        </div>
+                        <div class="column">
+                            <input type="radio" id="pvai2" v-model="newGamemode" value="2">
+                            <label class="label-inline" for="pvai2">PvAI lvl2</label>
+                        </div>
+                    </div>
+                </div>
+
                 <label for="gameid">Game Session ID</label>
-                <input type="text" id="gameid" v-model="gameid">
+                <input type="text" id="gameid" v-model="gameid"> <strong>
+                    <span v-if="gamemode === 0">PvP</span>
+                    <span v-else-if="gamemode === 1">PvAI lvl1</span>
+                    <span v-else-if="gamemode === 2">PvAI lvl2</span>
+                </strong>
 
 
             </div>
@@ -69,11 +91,11 @@
                                     <strong class="nextmove"> Draw </strong>
                                 </div>
                                 <!-- WIN-X -->
-                                <div v-if="result==2">
+                                <div v-else-if="result==2">
                                     <strong class="nextmove"> X wins </strong>
                                 </div>
                                 <!-- WIN-O -->
-                                <div v-if="result==3">
+                                <div v-else-if="result==3">
                                     <strong class="nextmove"> O wins </strong>
                                 </div>
                             </div>

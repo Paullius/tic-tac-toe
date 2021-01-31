@@ -14,7 +14,19 @@ var cache map[string]*game.Game = map[string]*game.Game{}
 func gamesHandle(w http.ResponseWriter, r *http.Request) {
     enableCors(&w)
     if r.Method == "POST" {
-        g := game.CreateGame()
+        r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+        dec := json.NewDecoder(r.Body)
+        dec.DisallowUnknownFields()
+        newGameParams := &struct {
+            GameMode game.ModeEnum
+        }{}
+        err := dec.Decode(&newGameParams)
+        if err != nil && err != io.EOF {
+            msg := "Request body has to be JSON object"
+            http.Error(w, msg, http.StatusInternalServerError)
+        }
+
+        g := game.CreateGame(newGameParams.GameMode)
         cache[g.ID] = g
 
         writeStatus(g.ID, w)
@@ -86,16 +98,18 @@ func writeStatus(id string, w http.ResponseWriter) {
     if g, ok := cache[id]; ok {
         gameStatus := &struct {
             GameID     string
-            Board     [][]string
+            Board      [][]string
             Result     game.ResultEnum
             IsComplete bool
             NextMove   string
+            GameMode   byte
         }{
             GameID:     g.ID,
             Board:      g.StatusBoard(),
             Result:     g.GetResultsEnum(),
             IsComplete: g.IsComplete(),
             NextMove:   string(g.NextMove),
+            GameMode:   byte(g.GameMode),
         }
         js, err := json.Marshal(gameStatus)
         if err != nil {
