@@ -45,7 +45,7 @@ func (g *Game) Move(pm *Move, x, y int) error {
     err := g.moveBoard(pm, x, y)
     // AI move
     if err == nil && g.GameMode == PvAIv1 {
-        g.doAIMove()
+        g.doAILvl1Move()
     }
 
     return err
@@ -103,7 +103,8 @@ func (g *Game) IsComplete() bool {
     return g.board.IsComplete() || g.board.GetWinner() != nil
 }
 
-func (g *Game) doAIMove() error {
+// AI selects random empty cell
+func (g *Game) doAILvl1Move() error {
 
     if g.IsComplete() {
         return nil
@@ -118,5 +119,4 @@ func (g *Game) doAIMove() error {
     err := g.moveBoard(pm, selected[0], selected[1])
 
     return err
-
 }

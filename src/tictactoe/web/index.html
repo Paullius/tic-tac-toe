@@ -11,8 +11,8 @@
         <div class="container">
             <h1>Tic-tac-toe</h1>
             <div>
-                <button v-on:click="startGame()">Start New Game Session</button>
-                <button v-on:click="getGameStatus()">Load Game Session</button>
+                <!-- <button v-on:click="startGame()">Start New Game Session</button> -->
+                <!-- <button v-on:click="getGameStatus()">Load Game Session</button> -->
                 <br>
                 <div id="gamemode">
                     <div class="row">
@@ -27,6 +27,9 @@
                         <div class="column">
                             <input type="radio" id="pvai2" v-model="newGamemode" value="2">
                             <label class="label-inline" for="pvai2">PvAI lvl2</label>
+                        </div>
+                        <div class="column">
+                            <button v-on:click="startGame()">Start New Game Session</button>
                         </div>
                     </div>
                 </div>
