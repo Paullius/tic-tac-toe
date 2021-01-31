@@ -6,6 +6,7 @@ var defaultData = {
     nextMove: "X",
     result: "",
     newGamemode: 0,
+    gamemode: 0,
     isComplete: false
 };
 function setStatus(data, respone) {
@@ -49,7 +50,7 @@ var app = new Vue({
             axios
                 .get('http://localhost:8080/v1/games/' + this.gameid).then(response => {
                     setStatus(this, response.data)
-                    console.log(response.data)
+                    // console.log(response.data)
                 })
                 .catch(function (error) {
                     console.log(error);

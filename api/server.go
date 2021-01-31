@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/Paullius/tic-tac-toe/game"
 	"github.com/Paullius/tic-tac-toe/game/enum"
@@ -28,6 +29,7 @@ func gamesHandle(w http.ResponseWriter, r *http.Request) {
         }
 
         g := game.CreateGame(newGameParams.GameMode)
+        cache.CleanUp()
         cache[g.ID] = g
 
         writeStatus(g.ID, w)
@@ -88,12 +90,12 @@ func gameMoveHandle(w http.ResponseWriter, r *http.Request) {
 }
 
 // StartServer starts API server
-func StartServer() {
+func StartServer(port int) {
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/v1/games", gamesHandle)
     myRouter.HandleFunc("/v1/games/{id}", gameHandle)
     myRouter.HandleFunc("/v1/games/{id}/move", gameMoveHandle)
-    http.ListenAndServe(":8080", myRouter)
+    http.ListenAndServe(":" + strconv.Itoa(port), myRouter)
 }
 
 func writeStatus(id string, w http.ResponseWriter) {

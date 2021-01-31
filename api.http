@@ -4,8 +4,6 @@ POST http://localhost:8080/v1/games HTTP/1.1
 content-type: application/json
 
 {
-    "user1": "Alex",
-    "user2": "Sam",
     "GameMode": 0
 }
 
@@ -22,7 +20,7 @@ GET http://localhost:8080/v1/games/{{gameid}} HTTP/1.1
 @x = 2
 @y = 0
 @move = X
-# POST http://localhost:8080/v1/games/{{gameid}}/{{x}}/{{y}}/{{move}} HTTP/1.1
+
 POST http://localhost:8080/v1/games/{{gameid}}/move HTTP/1.1
 content-type: application/json
 

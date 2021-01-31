@@ -3,6 +3,7 @@ package game
 import (
 	"errors"
 	"sync"
+	"time"
 
 	"github.com/Paullius/tic-tac-toe/game/enum"
 	"github.com/google/uuid"
@@ -11,6 +12,7 @@ import (
 // Game is tic-tac-toe game
 type Game struct {
     ID       string
+    StartTime time.Time
     board    *Board
     NextMove enum.Move
     GameMode enum.Mode
@@ -20,7 +22,7 @@ type Game struct {
 // CreateGame creates new game
 func CreateGame(gm enum.Mode) *Game {
     id := uuid.New().String()
-    g := &Game{ID: id, NextMove: enum.X, GameMode: gm}
+    g := &Game{ID: id, NextMove: enum.X, GameMode: gm, StartTime: time.Now().UTC()}
     gb := &Board{}
     gb.Init()
     g.board = gb
