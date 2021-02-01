@@ -40,7 +40,11 @@ go get "github.com/gorilla/mux"
 
 Build Server:
 ```bash
+#Windows:
 go build .\app\game-server.go
+
+#Mac:
+go build ./app/game-server.go
 ```
 
 ## Usage
