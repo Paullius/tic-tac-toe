@@ -109,9 +109,9 @@ func writeStatus(id string, w http.ResponseWriter) {
             GameMode   byte        `json:"gameMode"`
         }{
             GameID:     g.ID,
-            Board:      g.GetStatusBoard(),
-            Result:     g.GetResultsEnum(),
-            IsComplete: g.IsComplete(),
+            Board:      g.Board.GetStatusBoard(),
+            Result:     g.Board.GetResultsEnum(),
+            IsComplete: g.Board.IsCompleted(),
             NextMove:   string(g.NextMove),
             GameMode:   byte(g.GameMode),
         }

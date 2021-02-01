@@ -25,6 +25,7 @@ Tic-tac-toe is a game with web interface and REST API written in GO.
 
 
 #### Web UI
+* Vue.js and Milligram CSS frameworks
 * Long polling for fetching status updates (TODO: use WebSockets)
 * Web UI Example:  
     ![Web UI example](ui-example.png)

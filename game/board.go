@@ -28,25 +28,8 @@ func (gb *Board) Move(pm enum.Move, x, y int) error {
     return nil
 }
 
-func (gb *Board) validateMove(pm enum.Move, x, y int) error {
-
-    if x < 0 || y < 0 || x >= len(gb.moves) || y >= len(gb.moves[0]) {
-        return errors.New("invalid move - out of range")
-    }
-
-    if gb.moves[x][y] != 0 {
-        return errors.New("invalid move - move already exists")
-    }
-
-    if pm != enum.X && pm != enum.O {
-        return errors.New("invalid move - " + string(pm))
-    }
-
-    return nil
-}
-
-// IsComplete checks if game board is completed
-func (gb *Board) IsComplete() bool {
+// IsFull checks if game board is completed
+func (gb *Board) IsFull() bool {
     for _, row := range gb.moves {
         for _, move := range row {
             if move == enum.NoMove {
@@ -64,7 +47,7 @@ func (gb *Board) GetEmptyCells() [][2]int {
     for x, row := range gb.moves {
         for y, move := range row {
             if move == enum.NoMove {
-                emptyCells = append(emptyCells, [2]int{x,y})
+                emptyCells = append(emptyCells, [2]int{x, y})
             }
         }
     }
@@ -73,7 +56,47 @@ func (gb *Board) GetEmptyCells() [][2]int {
 }
 
 
+// GetStatusBoard gets game board matrix
+func (gb *Board) GetStatusBoard() [][]string {
+    status := make([][]string, len(gb.moves))
+    for x, row := range gb.moves {
+        status[x] = make([]string, len(row))
+        for y, move := range row {
+            if move == enum.NoMove {
+                status[x][y] = " "
+            } else {
+                status[x][y] = string(move)
+            }
+        }
+    }
+
+    return status
+}
+
+// GetResultsEnum gets game result enum
+func (gb *Board) GetResultsEnum() enum.Result {
+    winMove := gb.GetWinner()
+    if winMove != enum.NoMove {
+        if winMove == enum.X {
+            return enum.WinX
+        }
+        return enum.WinO
+    }
+
+    if gb.IsFull() {
+        return enum.Draw
+    }
+
+    return enum.InProgress
+}
+
+// IsCompleted checks if the board is completed
+func (gb *Board) IsCompleted() bool {
+    return gb.IsFull() || gb.GetWinner() != enum.NoMove
+}
+
 // GetWinner gets winner move
+// TODO: algorithm optimization
 func (gb *Board) GetWinner() enum.Move {
     l := len(gb.moves)
     var move enum.Move
@@ -140,4 +163,21 @@ func (gb *Board) GetWinner() enum.Move {
     }
 
     return enum.NoMove
+}
+
+func (gb *Board) validateMove(pm enum.Move, x, y int) error {
+
+    if x < 0 || y < 0 || x >= len(gb.moves) || y >= len(gb.moves[0]) {
+        return errors.New("invalid move - out of range")
+    }
+
+    if gb.moves[x][y] != 0 {
+        return errors.New("invalid move - move already exists")
+    }
+
+    if pm != enum.X && pm != enum.O {
+        return errors.New("invalid move - " + string(pm))
+    }
+
+    return nil
 }

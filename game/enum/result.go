@@ -4,12 +4,12 @@ package enum
 type Result byte
 
 const (
-    // InProgress is for in-progress status
+    // InProgress is in-progress status
     InProgress Result = 0
-    // Draw is for draw status
+    // Draw is draw status
     Draw Result = 1
-    // WinX is for X win status
+    // WinX is X player wins status
     WinX Result = 2
-    // WinO is for O win status
+    // WinO is O player wins status
     WinO Result = 3
 )

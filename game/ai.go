@@ -9,10 +9,10 @@ import (
 // AI lvl1 selects random empty cell
 func (g *Game) doAILvl1Move() error {
 
-	if g.IsComplete() {
+	if g.Board.IsCompleted() {
 		return nil
 	}
-	emptyCells := g.board.GetEmptyCells()
+	emptyCells := g.Board.GetEmptyCells()
 	move := getRandomCell(emptyCells)
 
 	return makeAIMove(g, move)
@@ -21,10 +21,10 @@ func (g *Game) doAILvl1Move() error {
 // AI lvl2 selects move
 func (g *Game) doAILvl2Move() error {
 
-	if g.IsComplete() {
+	if g.Board.IsCompleted() {
 		return nil
 	}
-	emptyCells := g.board.GetEmptyCells()
+	emptyCells := g.Board.GetEmptyCells()
 
 	var prevMove enum.Move
 	if g.NextMove == enum.X {
@@ -36,11 +36,11 @@ func (g *Game) doAILvl2Move() error {
 	var prevMoveWins *[2]int
 	for _, move := range emptyCells {
 		// make move if AI wins
-		if isMoveMakeWinner(g.board, move, g.NextMove) {
+		if isMoveMakeWinner(g.Board, move, g.NextMove) {
 			return makeAIMove(g, move)
         }
         // save move to prevent loosing
-		if isMoveMakeWinner(g.board, move, prevMove) {
+		if isMoveMakeWinner(g.Board, move, prevMove) {
 			prevMoveWins = &move
 		}
 	}
